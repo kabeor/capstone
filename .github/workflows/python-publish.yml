@@ -10,9 +10,20 @@ jobs:
       matrix:
         # Keep these old enough for compatibility
         os: [ubuntu-20.04, windows-2019, macos-11]
+        platform: [x32, x64]
 
     steps:
       - uses: actions/checkout@v3
+
+    - name: Set up MSVC x86
+      if: matrix.os == 'windows-2019' && matrix.platform == 'x32'
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
+
+    - name: Set up MSVC x64
+      if: matrix.os == 'windows-2019' && matrix.platform == 'x64'
+      uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
@@ -27,21 +38,21 @@ jobs:
         with:
           path: ./wheelhouse/*.whl
 
-  # make_sdist:
-  #   name: Make SDist
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #     with:
-  #       fetch-depth: 0  # Optional, use if you use setuptools_scm
-  #       submodules: true  # Optional, use if you have submodules
+  make_sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Optional, use if you use setuptools_scm
+        submodules: true  # Optional, use if you have submodules
 
-  #   - name: Build SDist
-  #     run: pipx run build --sdist
+    - name: Build SDist
+      run: pipx run build --sdist
 
-  #   - uses: actions/upload-artifact@v3
-  #     with:
-  #       path: dist/*.tar.gz
+    - uses: actions/upload-artifact@v3
+      with:
+        path: dist/*.tar.gz
 
   publish:
     needs: [build_wheels]
