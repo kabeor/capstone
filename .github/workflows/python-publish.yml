@@ -46,7 +46,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist/*.tar.gz
+        path: bindings/python/dist/*.tar.gz
 
   publish:
     needs: [build_wheels]
