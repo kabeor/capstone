@@ -1,4 +1,4 @@
-name: Build Python Wheels
+name: PyPI 📦 Distribution
 
 on: [push, pull_request]
 
@@ -11,7 +11,6 @@ jobs:
         # Keep these old enough for compatibility
         os: [ubuntu-20.04, windows-2019, macos-11]
         platform: [x32, x64]
-
     steps:
       - uses: actions/checkout@v3
 
