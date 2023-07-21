@@ -22,7 +22,8 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
           CIBW_ARCHS_LINUX: "x86_64 aarch64" # i686 ppc64le s390x Test all archs takes too long.
-          CIBW_ARCHS_WINDOWS: "AMD64 x86" # ARM64  FIXME: Seems ARM64 will rebuild arm64 wheel for unknow reason.
+          CIBW_ARCHS_WINDOWS: "AMD64 x86" # ARM64  Seems ARM64 will rebuild arm64 wheel for unknow reason.
+          CIBW_BUILD: "cp36-* cp39-* cp312-*"
         with:
           package-dir: bindings/python
 
