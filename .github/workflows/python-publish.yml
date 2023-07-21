@@ -17,11 +17,17 @@ jobs:
         if: matrix.os == 'windows-2019'
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
         env:
           CIBW_ARCHS_MACOS: "x86_64 universal2 arm64"
-          CIBW_ARCHS_LINUX: "x86_64 i686 ppc64le s390x" #  aarch64  Bug from cibuildwheel: exec /usr/local/bin/manylinux-entrypoint: exec format error
+          CIBW_ARCHS_LINUX: "x86_64 i686 aarch64 ppc64le s390x"
           CIBW_ARCHS_WINDOWS: "AMD64 x86" # ARM64  Seems ARM64 will rebuild arm64 wheel for unknow reason.
           CIBW_BUILD: "cp36-* cp39-* cp312-*"
         with:
